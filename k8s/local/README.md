@@ -17,6 +17,23 @@ Update `secrets.yaml` values before deploy:
 
 Keep passwords consistent between `*-password` and corresponding URL values.
 
+## Makefile shortcuts
+
+From repository root:
+
+```bash
+make k8s-build IMAGE=ghcr.io/correctroadh/opentoggl:local
+make k8s-deploy IMAGE=ghcr.io/correctroadh/opentoggl:local
+```
+
+Useful helpers:
+
+```bash
+make k8s-rollout
+make k8s-port-forward
+make k8s-delete
+```
+
 ## 2) Apply manifests
 
 ```bash
