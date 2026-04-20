@@ -17,16 +17,6 @@ Update `secrets.yaml` values before deploy:
 
 Keep passwords consistent between `*-password` and corresponding URL values.
 
-## Service DNS names
-
-Kubernetes Service DNS already resolves these names via CoreDNS (no manual CoreDNS entries needed):
-
-- `postgres.opentoggl-local.svc.cluster.local`
-- `redis.opentoggl-local.svc.cluster.local`
-- `opentoggl.opentoggl-local.svc.cluster.local`
-
-The default `database-url` and `redis-url` in `secrets.yaml` already use the fully qualified Service DNS names above.
-
 ## 2) Apply manifests
 
 ```bash
