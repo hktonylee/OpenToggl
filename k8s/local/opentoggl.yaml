@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: opentoggl
+  namespace: opentoggl-local
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: opentoggl
+  template:
+    metadata:
+      labels:
+        app: opentoggl
+    spec:
+      containers:
+        - name: opentoggl
+          image: ghcr.io/correctroadh/opentoggl:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: OPENTOGGL_SERVICE_NAME
+              value: opentoggl
+            - name: PORT
+              value: "8080"
+            - name: OPENTOGGL_FILESTORE_NAMESPACE
+              value: opentoggl
+            - name: OPENTOGGL_JOBS_QUEUE_NAME
+              value: default
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: opentoggl-secrets
+                  key: database-url
+            - name: REDIS_URL
+              valueFrom:
+                secretKeyRef:
+                  name: opentoggl-secrets
+                  key: redis-url
+          ports:
+            - containerPort: 8080
+              name: http
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 20
+            periodSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: opentoggl
+  namespace: opentoggl-local
+spec:
+  type: NodePort
+  selector:
+    app: opentoggl
+  ports:
+    - name: http
+      port: 8080
+      targetPort: http
+      nodePort: 30080
