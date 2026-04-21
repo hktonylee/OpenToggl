@@ -1,0 +1,15 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: opentoggl
+  namespace: opentoggl-local
+spec:
+  ingressClassName: tailscale
+  defaultBackend:
+    service:
+      name: opentoggl
+      port:
+        number: 8080
+  tls:
+    - hosts:
+        - opentoggl
