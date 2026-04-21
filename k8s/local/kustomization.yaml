@@ -7,3 +7,4 @@ resources:
   - postgres.yaml
   - redis.yaml
   - opentoggl.yaml
+  - tailscale-ingress.yaml

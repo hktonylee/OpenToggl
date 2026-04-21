@@ -26,16 +26,20 @@ spec:
               value: opentoggl
             - name: OPENTOGGL_JOBS_QUEUE_NAME
               value: default
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: opentoggl-secrets
+                  key: postgres-password
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: opentoggl-secrets
+                  key: redis-password
             - name: DATABASE_URL
-              valueFrom:
-                secretKeyRef:
-                  name: opentoggl-secrets
-                  key: database-url
+              value: postgres://postgres:$(POSTGRES_PASSWORD)@$(POSTGRES_SERVICE_HOST):$(POSTGRES_SERVICE_PORT_POSTGRES)/opentoggl?sslmode=disable
             - name: REDIS_URL
-              valueFrom:
-                secretKeyRef:
-                  name: opentoggl-secrets
-                  key: redis-url
+              value: redis://:$(REDIS_PASSWORD)@$(REDIS_SERVICE_HOST):$(REDIS_SERVICE_PORT_REDIS)/0
           ports:
             - containerPort: 8080
               name: http
